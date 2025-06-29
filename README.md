@@ -148,24 +148,6 @@ petrocalc-web/
 ├── .gitignore                    # Comprehensive Git ignore patterns
 └── README.md                     # This file
 ```
-│   │   ├── css/
-│   │   │   └── styles.css        # Custom CSS
-│   │   └── js/
-│   │       └── main.js           # JavaScript functionality
-│   └── templates/                # HTML templates
-│       ├── base.html             # Base template
-│       ├── index.html            # Home page
-│       ├── drilling.html         # Drilling calculations
-│       ├── fluids.html           # Fluid properties
-│       ├── reservoir.html        # Reservoir engineering
-│       ├── production.html       # Production engineering
-│       └── economics.html        # Economics
-
-├── tests/                        # Test files
-├── run.py                        # Application entry point
-├── pyproject.toml                # Project configuration
-└── README.md                     # This file
-```
 
 ## 🔧 Available Calculations
 
