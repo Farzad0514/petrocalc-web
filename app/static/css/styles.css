@@ -1,0 +1,164 @@
+/* Custom CSS for PetroCalc Web */
+
+/* Hover effects for cards */
+.hover-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+}
+
+/* Custom button styles */
+.btn {
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+/* Enhanced navbar */
+.navbar-brand {
+    font-size: 1.5rem;
+}
+
+/* Form styling */
+.form-control, .form-select {
+    border-radius: 6px;
+    border: 2px solid #e9ecef;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: #0d6efd;
+    box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+/* Alert styling */
+.alert {
+    border-radius: 8px;
+    border: none;
+    font-weight: 500;
+}
+
+/* Card enhancements */
+.card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card-header {
+    border: none;
+    font-weight: 600;
+}
+
+/* Loading spinner */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: #fff;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Footer styling */
+footer {
+    margin-top: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .display-4 {
+        font-size: 2rem;
+    }
+    
+    .fa-3x {
+        font-size: 2em;
+    }
+    
+    .fa-4x {
+        font-size: 2.5em;
+    }
+}
+
+/* Custom color variations */
+.text-petroleum {
+    color: #2c5530;
+}
+
+.bg-petroleum {
+    background-color: #2c5530;
+}
+
+/* Input group enhancements */
+.input-group .form-control {
+    border-radius: 6px 0 0 6px;
+}
+
+.input-group .btn {
+    border-radius: 0 6px 6px 0;
+}
+
+.input-group-text {
+    border-radius: 0;
+    background-color: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-left: none;
+    border-right: none;
+}
+
+/* Result highlighting */
+.result-highlight {
+    background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+    border-left: 4px solid #0d6efd;
+    padding: 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+}
+
+/* Code styling */
+code {
+    background-color: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #d63384;
+}
+
+/* Table enhancements */
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Progress bars */
+.progress {
+    border-radius: 10px;
+    height: 8px;
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}

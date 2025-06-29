@@ -1,0 +1,332 @@
+{% extends "base.html" %}
+
+{% block title %}Fluid Properties - PetroCalc Web{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-flask fa-2x text-info me-3"></i>
+            <div>
+                <h1 class="mb-0">Fluid Properties</h1>
+                <p class="text-muted mb-0">PVT properties and thermodynamic calculations</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Calculation Forms -->
+    <div class="col-lg-8">
+        <!-- Water Formation Volume Factor -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-tint me-2"></i>Water Formation Volume Factor</h5>
+            </div>
+            <div class="card-body">
+                <form id="waterFVFForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Temperature (°F)</label>
+                            <input type="number" class="form-control" id="waterTemp" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Pressure (psia)</label>
+                            <input type="number" class="form-control" id="waterPressure" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Salinity (ppm)</label>
+                            <input type="number" class="form-control" id="salinity" value="0" step="100">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info mt-3">
+                        <i class="fas fa-calculator me-2"></i>Calculate
+                    </button>
+                </form>
+                <div id="waterFVFResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Water Compressibility -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-compress me-2"></i>Water Compressibility</h5>
+            </div>
+            <div class="card-body">
+                <form id="waterCompressibilityForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Temperature (°F)</label>
+                            <input type="number" class="form-control" id="compTemp" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Pressure (psia)</label>
+                            <input type="number" class="form-control" id="compPressure" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Salinity (ppm)</label>
+                            <input type="number" class="form-control" id="compSalinity" value="0" step="100">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <i class="fas fa-calculator me-2"></i>Calculate
+                    </button>
+                </form>
+                <div id="waterCompressibilityResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Gas Formation Volume Factor -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-gas-pump me-2"></i>Gas Formation Volume Factor</h5>
+            </div>
+            <div class="card-body">
+                <form id="gasFVFForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Temperature (°R)</label>
+                            <input type="number" class="form-control" id="gasTemp" step="0.1" required>
+                            <small class="form-text text-muted">°R = °F + 459.67</small>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Pressure (psia)</label>
+                            <input type="number" class="form-control" id="gasPressure" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Z-Factor</label>
+                            <input type="number" class="form-control" id="zFactor" value="1.0" step="0.001" min="0" max="2">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">
+                        <i class="fas fa-calculator me-2"></i>Calculate
+                    </button>
+                </form>
+                <div id="gasFVFResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Water Viscosity -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-water me-2"></i>Water Viscosity</h5>
+            </div>
+            <div class="card-body">
+                <form id="waterViscosityForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Temperature (°F)</label>
+                            <input type="number" class="form-control" id="viscTemp" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Pressure (psia)</label>
+                            <input type="number" class="form-control" id="viscPressure" step="0.1" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Salinity (ppm)</label>
+                            <input type="number" class="form-control" id="viscSalinity" value="0" step="100">
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning mt-3">
+                        <i class="fas fa-calculator me-2"></i>Calculate
+                    </button>
+                </form>
+                <div id="waterViscosityResult" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Panel -->
+    <div class="col-lg-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Information</h5>
+            </div>
+            <div class="card-body">
+                <h6>Units:</h6>
+                <ul class="small">
+                    <li>Temperature: °F (Fahrenheit)</li>
+                    <li>°R (Rankine) = °F + 459.67</li>
+                    <li>Pressure: psia (absolute)</li>
+                    <li>Salinity: ppm (parts per million)</li>
+                    <li>FVF: res bbl/STB or res ft³/scf</li>
+                    <li>Compressibility: 1/psi</li>
+                    <li>Viscosity: cp (centipoise)</li>
+                </ul>
+
+                <h6 class="mt-3">Typical Values:</h6>
+                <ul class="small">
+                    <li>Fresh water FVF: ~1.0</li>
+                    <li>Seawater salinity: ~35,000 ppm</li>
+                    <li>Formation water: 50,000-300,000 ppm</li>
+                    <li>Water viscosity: 0.3-1.0 cp</li>
+                    <li>Z-factor: 0.7-1.2 (typical range)</li>
+                </ul>
+
+                <h6 class="mt-3">Correlations Used:</h6>
+                <ul class="small">
+                    <li>McCain correlation for water FVF</li>
+                    <li>Osif correlation for water compressibility</li>
+                    <li>Real gas law for gas FVF</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-thermometer-half me-2"></i>Temperature Converter</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-12">
+                        <label class="form-label">°F to °R Converter</label>
+                        <div class="input-group">
+                            <input type="number" class="form-control" id="fahrenheit" placeholder="°F">
+                            <span class="input-group-text">=</span>
+                            <input type="number" class="form-control" id="rankine" placeholder="°R" readonly>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Utility function to display results
+function displayResult(elementId, result, isError = false) {
+    const element = document.getElementById(elementId);
+    if (isError) {
+        element.innerHTML = `<div class="alert alert-danger">${result}</div>`;
+    } else {
+        element.innerHTML = `<div class="alert alert-success">${result}</div>`;
+    }
+}
+
+// Utility function to make API calls
+async function makeAPICall(endpoint, data) {
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('API call failed:', error);
+        throw error;
+    }
+}
+
+// Temperature converter
+document.getElementById('fahrenheit').addEventListener('input', function() {
+    const f = parseFloat(this.value);
+    if (!isNaN(f)) {
+        document.getElementById('rankine').value = (f + 459.67).toFixed(2);
+    } else {
+        document.getElementById('rankine').value = '';
+    }
+});
+
+// Water Formation Volume Factor
+document.getElementById('waterFVFForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const temperature = parseFloat(document.getElementById('waterTemp').value);
+    const pressure = parseFloat(document.getElementById('waterPressure').value);
+    const salinity = parseFloat(document.getElementById('salinity').value) || 0;
+    
+    try {
+        const result = await makeAPICall('/api/fluids/water-formation-volume-factor', {
+            temperature: temperature,
+            pressure: pressure,
+            salinity: salinity
+        });
+        
+        displayResult('waterFVFResult', 
+            `<strong>Result:</strong> ${result.water_fvf.toFixed(6)} ${result.unit}`
+        );
+    } catch (error) {
+        displayResult('waterFVFResult', `Error: ${error.message}`, true);
+    }
+});
+
+// Water Compressibility
+document.getElementById('waterCompressibilityForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const temperature = parseFloat(document.getElementById('compTemp').value);
+    const pressure = parseFloat(document.getElementById('compPressure').value);
+    const salinity = parseFloat(document.getElementById('compSalinity').value) || 0;
+    
+    try {
+        const result = await makeAPICall('/api/fluids/water-compressibility', {
+            temperature: temperature,
+            pressure: pressure,
+            salinity: salinity
+        });
+        
+        displayResult('waterCompressibilityResult', 
+            `<strong>Result:</strong> ${result.water_compressibility.toExponential(3)} ${result.unit}`
+        );
+    } catch (error) {
+        displayResult('waterCompressibilityResult', `Error: ${error.message}`, true);
+    }
+});
+
+// Gas Formation Volume Factor
+document.getElementById('gasFVFForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const temperature = parseFloat(document.getElementById('gasTemp').value);
+    const pressure = parseFloat(document.getElementById('gasPressure').value);
+    const zFactor = parseFloat(document.getElementById('zFactor').value) || 1.0;
+    
+    try {
+        const result = await makeAPICall('/api/fluids/gas-formation-volume-factor', {
+            temperature: temperature,
+            pressure: pressure,
+            z_factor: zFactor
+        });
+        
+        displayResult('gasFVFResult', 
+            `<strong>Result:</strong> ${result.gas_fvf.toFixed(6)} ${result.unit}`
+        );
+    } catch (error) {
+        displayResult('gasFVFResult', `Error: ${error.message}`, true);
+    }
+});
+
+// Water Viscosity
+document.getElementById('waterViscosityForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const temperature = parseFloat(document.getElementById('viscTemp').value);
+    const pressure = parseFloat(document.getElementById('viscPressure').value);
+    const salinity = parseFloat(document.getElementById('viscSalinity').value) || 0;
+    
+    try {
+        const result = await makeAPICall('/api/fluids/water-viscosity', {
+            temperature: temperature,
+            pressure: pressure,
+            salinity: salinity
+        });
+        
+        displayResult('waterViscosityResult', 
+            `<strong>Result:</strong> ${result.water_viscosity.toFixed(4)} ${result.unit}`
+        );
+    } catch (error) {
+        displayResult('waterViscosityResult', `Error: ${error.message}`, true);
+    }
+});
+</script>
+{% endblock %}

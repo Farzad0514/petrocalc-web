@@ -1,0 +1,350 @@
+{% extends "base.html" %}
+
+{% block title %}Economics - PetroCalc Web{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-chart-line fa-2x text-danger me-3"></i>
+            <div>
+                <h1 class="mb-0">Economics</h1>
+                <p class="text-muted mb-0">Economic evaluation and investment analysis</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- NPV Calculator -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-dollar-sign me-2"></i>Net Present Value</h5>
+            </div>
+            <div class="card-body">
+                <form id="npvForm">
+                    <div class="mb-3">
+                        <label for="cash_flows" class="form-label">Cash Flows (comma-separated)</label>
+                        <input type="text" class="form-control" id="cash_flows" placeholder="100000,150000,120000,80000" required>
+                        <small class="form-text text-muted">Enter annual cash flows separated by commas</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="discount_rate" class="form-label">Discount Rate (%)</label>
+                        <input type="number" class="form-control" id="discount_rate" step="0.01" value="10" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="initial_investment" class="form-label">Initial Investment ($)</label>
+                        <input type="number" class="form-control" id="initial_investment" step="0.01" value="0">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Calculate NPV</button>
+                </form>
+                <div id="npvResult" class="mt-3" style="display: none;">
+                    <div class="alert alert-success">
+                        <h6>Result:</h6>
+                        <p class="mb-0"><strong>NPV:</strong> $<span id="npvValue"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Oil Revenue Calculator -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-oil-can me-2"></i>Oil Revenue</h5>
+            </div>
+            <div class="card-body">
+                <form id="oilRevenueForm">
+                    <div class="mb-3">
+                        <label for="production_rate" class="form-label">Production Rate (bbl/day)</label>
+                        <input type="number" class="form-control" id="production_rate" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="oil_price" class="form-label">Oil Price ($/bbl)</label>
+                        <input type="number" class="form-control" id="oil_price" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="royalty_rate" class="form-label">Royalty Rate (%)</label>
+                        <input type="number" class="form-control" id="royalty_rate" step="0.01" value="12.5">
+                    </div>
+                    <div class="mb-3">
+                        <label for="operating_cost" class="form-label">Operating Cost ($/bbl)</label>
+                        <input type="number" class="form-control" id="operating_cost" step="0.01" value="15">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Calculate Revenue</button>
+                </form>
+                <div id="oilRevenueResult" class="mt-3" style="display: none;">
+                    <div class="alert alert-success">
+                        <h6>Result:</h6>
+                        <p class="mb-0"><strong>Annual Net Revenue:</strong> $<span id="oilRevenueValue"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Drilling Cost Estimation -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-drill me-2"></i>Drilling Cost</h5>
+            </div>
+            <div class="card-body">
+                <form id="drillingCostForm">
+                    <div class="mb-3">
+                        <label for="well_depth" class="form-label">Well Depth (ft)</label>
+                        <input type="number" class="form-control" id="well_depth" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="hole_diameter" class="form-label">Hole Diameter (inches)</label>
+                        <input type="number" class="form-control" id="hole_diameter" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="day_rate" class="form-label">Day Rate ($/day)</label>
+                        <input type="number" class="form-control" id="day_rate" step="0.01" value="25000">
+                    </div>
+                    <div class="mb-3">
+                        <label for="drilling_days_per_1000ft" class="form-label">Drilling Days per 1000ft</label>
+                        <input type="number" class="form-control" id="drilling_days_per_1000ft" step="0.01" value="2.5">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Estimate Cost</button>
+                </form>
+                <div id="drillingCostResult" class="mt-3" style="display: none;">
+                    <div class="alert alert-success">
+                        <h6>Result:</h6>
+                        <p class="mb-0"><strong>Drilling Cost:</strong> $<span id="drillingCostValue"></span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Break-even Oil Price -->
+    <div class="col-lg-6 mb-4">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-balance-scale me-2"></i>Break-even Oil Price</h5>
+            </div>
+            <div class="card-body">
+                <form id="breakEvenForm">
+                    <div class="mb-3">
+                        <label for="be_initial_investment" class="form-label">Initial Investment ($)</label>
+                        <input type="number" class="form-control" id="be_initial_investment" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="be_annual_production" class="form-label">Annual Production (bbl)</label>
+                        <input type="number" class="form-control" id="be_annual_production" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="be_operating_cost" class="form-label">Operating Cost ($/bbl)</label>
+                        <input type="number" class="form-control" id="be_operating_cost" step="0.01" value="15">
+                    </div>
+                    <div class="mb-3">
+                        <label for="be_discount_rate" class="form-label">Discount Rate (%)</label>
+                        <input type="number" class="form-control" id="be_discount_rate" step="0.01" value="10">
+                    </div>
+                    <div class="mb-3">
+                        <label for="project_life" class="form-label">Project Life (years)</label>
+                        <input type="number" class="form-control" id="project_life" value="20">
+                    </div>
+                    <button type="submit" class="btn btn-danger">Calculate</button>
+                </form>
+                <div id="breakEvenResult" class="mt-3" style="display: none;">
+                    <div class="alert alert-success">
+                        <h6>Result:</h6>
+                        <p class="mb-0"><strong>Break-even Oil Price:</strong> $<span id="breakEvenValue"></span>/bbl</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-lg-6">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Available Modules</h5>
+            </div>
+            <div class="card-body">
+                <p>While this module is under development, you can use these available modules:</p>
+                <div class="d-grid gap-2">
+                    <a href="/drilling" class="btn btn-primary">
+                        <i class="fas fa-drill me-2"></i>Drilling Calculations
+                    </a>
+                    <a href="/fluids" class="btn btn-info">
+                        <i class="fas fa-flask me-2"></i>Fluid Properties
+                    </a>
+                    <a href="/reservoir" class="btn btn-success">
+                        <i class="fas fa-layer-group me-2"></i>Reservoir Engineering
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-dollar-sign me-2"></i>Economic Principles</h5>
+            </div>
+            <div class="card-body">
+                <h6>Key Concepts:</h6>
+                <ul class="small">
+                    <li><strong>NPV:</strong> Net Present Value</li>
+                    <li><strong>IRR:</strong> Internal Rate of Return</li>
+                    <li><strong>CAPEX:</strong> Capital Expenditure</li>
+                    <li><strong>OPEX:</strong> Operating Expenditure</li>
+                    <li><strong>DCF:</strong> Discounted Cash Flow</li>
+                </ul>
+                <p class="mt-3">
+                    <a href="/api/docs" target="_blank" class="btn btn-outline-danger">
+                        <i class="fas fa-external-link-alt me-2"></i>View API Documentation
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// NPV Form
+document.getElementById('npvForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const cashFlowsStr = document.getElementById('cash_flows').value;
+    const cashFlows = cashFlowsStr.split(',').map(x => parseFloat(x.trim()));
+    
+    const data = {
+        cash_flows: cashFlows,
+        discount_rate: parseFloat(document.getElementById('discount_rate').value) / 100,
+        initial_investment: parseFloat(document.getElementById('initial_investment').value)
+    };
+    
+    try {
+        const response = await fetch('/api/economics/net_present_value', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            document.getElementById('npvValue').textContent = result.net_present_value.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('npvResult').style.display = 'block';
+        } else {
+            alert('Error: ' + result.detail);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+});
+
+// Oil Revenue Form
+document.getElementById('oilRevenueForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const data = {
+        production_rate: parseFloat(document.getElementById('production_rate').value),
+        oil_price: parseFloat(document.getElementById('oil_price').value),
+        royalty_rate: parseFloat(document.getElementById('royalty_rate').value) / 100,
+        operating_cost: parseFloat(document.getElementById('operating_cost').value)
+    };
+    
+    try {
+        const response = await fetch('/api/economics/oil_revenue', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            document.getElementById('oilRevenueValue').textContent = result.annual_net_revenue.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('oilRevenueResult').style.display = 'block';
+        } else {
+            alert('Error: ' + result.detail);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+});
+
+// Drilling Cost Form
+document.getElementById('drillingCostForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const data = {
+        well_depth: parseFloat(document.getElementById('well_depth').value),
+        hole_diameter: parseFloat(document.getElementById('hole_diameter').value),
+        day_rate: parseFloat(document.getElementById('day_rate').value),
+        drilling_days_per_1000ft: parseFloat(document.getElementById('drilling_days_per_1000ft').value)
+    };
+    
+    try {
+        const response = await fetch('/api/economics/drilling_cost', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            document.getElementById('drillingCostValue').textContent = result.drilling_cost.toLocaleString('en-US', {minimumFractionDigits: 2});
+            document.getElementById('drillingCostResult').style.display = 'block';
+        } else {
+            alert('Error: ' + result.detail);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+});
+
+// Break-even Form
+document.getElementById('breakEvenForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const data = {
+        initial_investment: parseFloat(document.getElementById('be_initial_investment').value),
+        annual_production: parseFloat(document.getElementById('be_annual_production').value),
+        operating_cost: parseFloat(document.getElementById('be_operating_cost').value),
+        discount_rate: parseFloat(document.getElementById('be_discount_rate').value) / 100,
+        project_life: parseInt(document.getElementById('project_life').value)
+    };
+    
+    try {
+        const response = await fetch('/api/economics/break_even_oil_price', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+            document.getElementById('breakEvenValue').textContent = result.break_even_price.toFixed(2);
+            document.getElementById('breakEvenResult').style.display = 'block';
+        } else {
+            alert('Error: ' + result.detail);
+        }
+    } catch (error) {
+        alert('Error: ' + error.message);
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,384 @@
+{% extends "base.html" %}
+
+{% block title %}Flow Calculations - PetroCalc Web{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="fas fa-stream me-3"></i>Flow Calculations</h1>
+                <p class="text-muted">Single-phase and multiphase flow, pressure drop, and flow through pipes and restrictions</p>
+            </div>
+            <a href="/" class="btn btn-outline-primary">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Moody Friction Factor Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-calculator me-2"></i>Moody Friction Factor</h5>
+            </div>
+            <div class="card-body">
+                <form id="moodyForm">
+                    <div class="mb-3">
+                        <label for="reynoldsNumber" class="form-label">Reynolds Number</label>
+                        <input type="number" class="form-control" id="reynoldsNumber" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="relativeRoughness" class="form-label">Relative Roughness (ε/D)</label>
+                        <input type="number" class="form-control" id="relativeRoughness" step="0.00001" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-calculator me-2"></i>Calculate Friction Factor
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="moodyResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Pressure Drop in Horizontal Pipe Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-white">
+                <h5 class="mb-0"><i class="fas fa-arrows-h me-2"></i>Pressure Drop - Horizontal Pipe</h5>
+            </div>
+            <div class="card-body">
+                <form id="pressureDropForm">
+                    <div class="mb-3">
+                        <label for="flowRate" class="form-label">Flow Rate (bbl/day)</label>
+                        <input type="number" class="form-control" id="flowRate" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pipeDiameter" class="form-label">Pipe Diameter (inches)</label>
+                        <input type="number" class="form-control" id="pipeDiameter" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pipeLength" class="form-label">Pipe Length (ft)</label>
+                        <input type="number" class="form-control" id="pipeLength" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fluidDensity" class="form-label">Fluid Density (lb/ft³)</label>
+                        <input type="number" class="form-control" id="fluidDensity" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="fluidViscosity" class="form-label">Fluid Viscosity (cp)</label>
+                        <input type="number" class="form-control" id="fluidViscosity" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="pipeRoughness" class="form-label">Pipe Roughness (ft)</label>
+                        <input type="number" class="form-control" id="pipeRoughness" step="0.0001" value="0.0006">
+                    </div>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-calculator me-2"></i>Calculate Pressure Drop
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="pressureDropResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Gas Flow Rate (Weymouth) Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-gas-pump me-2"></i>Gas Flow Rate (Weymouth)</h5>
+            </div>
+            <div class="card-body">
+                <form id="gasFlowForm">
+                    <div class="mb-3">
+                        <label for="upstreamPressure" class="form-label">Upstream Pressure (psia)</label>
+                        <input type="number" class="form-control" id="upstreamPressure" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="downstreamPressure" class="form-label">Downstream Pressure (psia)</label>
+                        <input type="number" class="form-control" id="downstreamPressure" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gasPipeDiameter" class="form-label">Pipe Diameter (inches)</label>
+                        <input type="number" class="form-control" id="gasPipeDiameter" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gasPipeLength" class="form-label">Pipe Length (miles)</label>
+                        <input type="number" class="form-control" id="gasPipeLength" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gasGravity" class="form-label">Gas Gravity (air = 1.0)</label>
+                        <input type="number" class="form-control" id="gasGravity" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gasTemperature" class="form-label">Temperature (°R)</label>
+                        <input type="number" class="form-control" id="gasTemperature" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="efficiency" class="form-label">Pipeline Efficiency</label>
+                        <input type="number" class="form-control" id="efficiency" step="0.01" value="1.0">
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-calculator me-2"></i>Calculate Gas Flow Rate
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="gasFlowResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle me-2"></i>About Flow Calculations</h5>
+                <p>
+                    Flow calculations are fundamental to petroleum engineering and include:
+                </p>
+                <ul>
+                    <li><strong>Moody Friction Factor:</strong> Determines friction losses in pipe flow based on Reynolds number and relative roughness</li>
+                    <li><strong>Pressure Drop:</strong> Calculates pressure losses due to friction in horizontal pipe flow</li>
+                    <li><strong>Weymouth Equation:</strong> Predicts gas flow rates in pipelines</li>
+                    <li><strong>Multiphase Flow:</strong> Analyzes complex flow patterns with multiple phases</li>
+                </ul>
+                <p>
+                    These calculations are essential for pipeline design, production optimization, and flow assurance.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('moodyForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        reynolds_number: parseFloat(document.getElementById('reynoldsNumber').value),
+        relative_roughness: parseFloat(document.getElementById('relativeRoughness').value)
+    };
+    
+    try {
+        const response = await fetch('/api/flow/moody_friction_factor', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('moodyResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Friction Factor:</strong></td>
+                            <td>${result.friction_factor.toFixed(6)}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Reynolds Number:</strong></td>
+                            <td>${result.reynolds_number.toLocaleString()}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Relative Roughness:</strong></td>
+                            <td>${result.relative_roughness.toFixed(6)}</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('moodyResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('moodyResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('pressureDropForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        flow_rate: parseFloat(document.getElementById('flowRate').value),
+        pipe_diameter: parseFloat(document.getElementById('pipeDiameter').value),
+        pipe_length: parseFloat(document.getElementById('pipeLength').value),
+        fluid_density: parseFloat(document.getElementById('fluidDensity').value),
+        fluid_viscosity: parseFloat(document.getElementById('fluidViscosity').value),
+        pipe_roughness: parseFloat(document.getElementById('pipeRoughness').value)
+    };
+    
+    try {
+        const response = await fetch('/api/flow/pressure_drop_horizontal_pipe', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('pressureDropResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Pressure Drop:</strong></td>
+                            <td>${result.pressure_drop_psi.toFixed(2)} psi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flow Rate:</strong></td>
+                            <td>${result.flow_rate_bbl_per_day.toLocaleString()} bbl/day</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pipe Diameter:</strong></td>
+                            <td>${result.pipe_diameter_inches}" </td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pipe Length:</strong></td>
+                            <td>${result.pipe_length_ft.toLocaleString()} ft</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('pressureDropResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('pressureDropResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('gasFlowForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        upstream_pressure: parseFloat(document.getElementById('upstreamPressure').value),
+        downstream_pressure: parseFloat(document.getElementById('downstreamPressure').value),
+        pipe_diameter: parseFloat(document.getElementById('gasPipeDiameter').value),
+        pipe_length: parseFloat(document.getElementById('gasPipeLength').value),
+        gas_gravity: parseFloat(document.getElementById('gasGravity').value),
+        temperature: parseFloat(document.getElementById('gasTemperature').value),
+        efficiency: parseFloat(document.getElementById('efficiency').value)
+    };
+    
+    try {
+        const response = await fetch('/api/flow/gas_flow_rate_weymouth', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('gasFlowResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Gas Flow Rate:</strong></td>
+                            <td>${result.gas_flow_rate_mscf_per_day.toFixed(2)} Mscf/day</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Upstream Pressure:</strong></td>
+                            <td>${result.upstream_pressure_psia} psia</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Downstream Pressure:</strong></td>
+                            <td>${result.downstream_pressure_psia} psia</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pipe Diameter:</strong></td>
+                            <td>${result.pipe_diameter_inches}" </td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('gasFlowResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('gasFlowResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+</script>
+{% endblock %}

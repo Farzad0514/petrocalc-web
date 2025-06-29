@@ -1,0 +1,304 @@
+{% extends "base.html" %}
+
+{% block title %}Drilling Calculations - PetroCalc Web{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex align-items-center mb-4">
+            <i class="fas fa-drill fa-2x text-primary me-3"></i>
+            <div>
+                <h1 class="mb-0">Drilling Calculations</h1>
+                <p class="text-muted mb-0">Mud properties, hydraulics, and wellbore calculations</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <!-- Calculation Forms -->
+    <div class="col-lg-8">
+        <!-- Mud Weight to Pressure Gradient -->
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-weight me-2"></i>Mud Weight to Pressure Gradient</h5>
+            </div>
+            <div class="card-body">
+                <form id="mudWeightForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Mud Weight</label>
+                            <input type="number" class="form-control" id="mudWeight" step="0.01" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Unit</label>
+                            <select class="form-select" id="mudWeightUnit">
+                                <option value="ppg">ppg (pounds per gallon)</option>
+                                <option value="sg">sg (specific gravity)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-3">
+                        <i class="fas fa-calculator me-2"></i>Calculate
+                    </button>
+                </form>
+                <div id="mudWeightResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Hydrostatic Pressure -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-tint me-2"></i>Hydrostatic Pressure</h5>
+            </div>
+            <div class="card-body">
+                <form id="hydrostaticForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Mud Weight</label>
+                            <input type="number" class="form-control" id="hydroMudWeight" step="0.01" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Depth (ft)</label>
+                            <input type="number" class="form-control" id="depth" step="0.01" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Unit</label>
+                            <select class="form-select" id="hydroUnit">
+                                <option value="ppg">ppg</option>
+                                <option value="sg">sg</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-info mt-3">
+                        <i class="fas fa-calculator me-2"></i>Calculate
+                    </button>
+                </form>
+                <div id="hydrostaticResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Annular Velocity -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-arrows-alt-v me-2"></i>Annular Velocity</h5>
+            </div>
+            <div class="card-body">
+                <form id="annularForm">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <label class="form-label">Flow Rate (gpm)</label>
+                            <input type="number" class="form-control" id="flowRate" step="0.01" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Hole Diameter (in)</label>
+                            <input type="number" class="form-control" id="holeDiameter" step="0.01" required>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Pipe Diameter (in)</label>
+                            <input type="number" class="form-control" id="pipeDiameter" step="0.01" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-success mt-3">
+                        <i class="fas fa-calculator me-2"></i>Calculate
+                    </button>
+                </form>
+                <div id="annularResult" class="mt-3"></div>
+            </div>
+        </div>
+
+        <!-- Pipe Velocity -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-arrow-up me-2"></i>Pipe Velocity</h5>
+            </div>
+            <div class="card-body">
+                <form id="pipeVelocityForm">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Flow Rate (gpm)</label>
+                            <input type="number" class="form-control" id="pipeFlowRate" step="0.01" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Pipe Inner Diameter (in)</label>
+                            <input type="number" class="form-control" id="pipeInnerDiameter" step="0.01" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-warning mt-3">
+                        <i class="fas fa-calculator me-2"></i>Calculate
+                    </button>
+                </form>
+                <div id="pipeVelocityResult" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Panel -->
+    <div class="col-lg-4">
+        <div class="card bg-light">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-info-circle me-2"></i>Information</h5>
+            </div>
+            <div class="card-body">
+                <h6>Common Units:</h6>
+                <ul class="small">
+                    <li>ppg: pounds per gallon</li>
+                    <li>sg: specific gravity</li>
+                    <li>psi: pounds per square inch</li>
+                    <li>ft: feet</li>
+                    <li>gpm: gallons per minute</li>
+                </ul>
+
+                <h6 class="mt-3">Typical Values:</h6>
+                <ul class="small">
+                    <li>Water: 8.33 ppg</li>
+                    <li>Oil-based mud: 10-16 ppg</li>
+                    <li>Water-based mud: 8.5-12 ppg</li>
+                    <li>Brine: 8.5-12 ppg</li>
+                </ul>
+
+                <h6 class="mt-3">Formulas:</h6>
+                <ul class="small">
+                    <li>Pressure gradient (psi/ft) = Mud weight (ppg) × 0.052</li>
+                    <li>Hydrostatic pressure = Pressure gradient × Depth</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="card mt-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recent Calculations</h5>
+            </div>
+            <div class="card-body">
+                <div id="recentCalculations">
+                    <p class="text-muted">No recent calculations</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Utility function to display results
+function displayResult(elementId, result, isError = false) {
+    const element = document.getElementById(elementId);
+    if (isError) {
+        element.innerHTML = `<div class="alert alert-danger">${result}</div>`;
+    } else {
+        element.innerHTML = `<div class="alert alert-success">${result}</div>`;
+    }
+}
+
+// Utility function to make API calls
+async function makeAPICall(endpoint, data) {
+    try {
+        const response = await fetch(endpoint, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+        });
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        return await response.json();
+    } catch (error) {
+        console.error('API call failed:', error);
+        throw error;
+    }
+}
+
+// Mud Weight to Pressure Gradient
+document.getElementById('mudWeightForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const mudWeight = parseFloat(document.getElementById('mudWeight').value);
+    const unit = document.getElementById('mudWeightUnit').value;
+    
+    try {
+        const result = await makeAPICall('/api/drilling/mud-weight-to-pressure-gradient', {
+            mud_weight: mudWeight,
+            unit: unit
+        });
+        
+        displayResult('mudWeightResult', 
+            `<strong>Result:</strong> ${result.pressure_gradient.toFixed(4)} ${result.pressure_gradient_unit}`
+        );
+    } catch (error) {
+        displayResult('mudWeightResult', `Error: ${error.message}`, true);
+    }
+});
+
+// Hydrostatic Pressure
+document.getElementById('hydrostaticForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const mudWeight = parseFloat(document.getElementById('hydroMudWeight').value);
+    const depth = parseFloat(document.getElementById('depth').value);
+    const unit = document.getElementById('hydroUnit').value;
+    
+    try {
+        const result = await makeAPICall('/api/drilling/hydrostatic-pressure', {
+            mud_weight: mudWeight,
+            depth: depth,
+            unit: unit
+        });
+        
+        displayResult('hydrostaticResult', 
+            `<strong>Result:</strong> ${result.hydrostatic_pressure.toFixed(2)} ${result.pressure_unit}`
+        );
+    } catch (error) {
+        displayResult('hydrostaticResult', `Error: ${error.message}`, true);
+    }
+});
+
+// Annular Velocity
+document.getElementById('annularForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const flowRate = parseFloat(document.getElementById('flowRate').value);
+    const holeDiameter = parseFloat(document.getElementById('holeDiameter').value);
+    const pipeDiameter = parseFloat(document.getElementById('pipeDiameter').value);
+    
+    try {
+        const result = await makeAPICall('/api/drilling/annular-velocity', {
+            flow_rate: flowRate,
+            hole_diameter: holeDiameter,
+            pipe_diameter: pipeDiameter
+        });
+        
+        displayResult('annularResult', 
+            `<strong>Result:</strong> ${result.annular_velocity.toFixed(2)} ${result.velocity_unit}`
+        );
+    } catch (error) {
+        displayResult('annularResult', `Error: ${error.message}`, true);
+    }
+});
+
+// Pipe Velocity
+document.getElementById('pipeVelocityForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const flowRate = parseFloat(document.getElementById('pipeFlowRate').value);
+    const innerDiameter = parseFloat(document.getElementById('pipeInnerDiameter').value);
+    
+    try {
+        const result = await makeAPICall('/api/drilling/pipe-velocity', {
+            flow_rate: flowRate,
+            pipe_inner_diameter: innerDiameter
+        });
+        
+        displayResult('pipeVelocityResult', 
+            `<strong>Result:</strong> ${result.pipe_velocity.toFixed(2)} ${result.velocity_unit}`
+        );
+    } catch (error) {
+        displayResult('pipeVelocityResult', `Error: ${error.message}`, true);
+    }
+});
+</script>
+{% endblock %}

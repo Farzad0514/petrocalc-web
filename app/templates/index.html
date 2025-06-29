@@ -1,0 +1,409 @@
+{% extends "base.html" %}
+
+{% block title %}PetroCalc Web - Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="bg-primary text-white rounded p-5 text-center">
+            <h1 class="display-4 fw-bold mb-3">
+                <i class="fas fa-oil-well me-3"></i>PetroCalc Web
+            </h1>
+            <p class="lead mb-4">
+                Professional petroleum engineering calculations at your fingertips
+            </p>
+            <p class="fs-5">
+                A comprehensive web application for drilling, reservoir, production, and economic calculations
+            </p>
+            
+            <!-- PetroCalc Status -->
+            {% if petrocalc_available %}
+                <div class="alert alert-success d-inline-block mt-3">
+                    <i class="fas fa-check-circle me-2"></i>
+                    PetroCalc library loaded successfully
+                    {% if config_info.petrocalc_location == 'pip_installed' %}
+                        (pip installed)
+                    {% elif config_info.petrocalc_location == 'local_src' %}
+                        (local development)
+                    {% endif %}
+                </div>
+            {% else %}
+                <div class="alert alert-warning d-inline-block mt-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    PetroCalc library not found - some features may be limited
+                    <br>
+                    <small>Run <code>python setup.py</code> or <code>pip install petrocalc</code></small>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Search Section -->
+<div class="row mb-5">
+    <div class="col-12">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title"><i class="fas fa-search me-2"></i>Quick Search</h5>
+                <div class="input-group">
+                    <input type="text" class="form-control" id="searchInput" placeholder="Search for calculations...">
+                    <button class="btn btn-outline-primary" type="button" id="searchBtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Calculation Modules -->
+<div class="row g-4">
+    <!-- Drilling Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-drill fa-3x text-primary"></i>
+                </div>
+                <h5 class="card-title">Drilling Calculations</h5>
+                <p class="card-text">
+                    Mud properties, hydraulics, pressure calculations, annular velocity, 
+                    and wellbore stability analysis.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Mud weight conversions</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Hydrostatic pressure</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Annular velocity</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Reynolds number</li>
+                </ul>
+                <a href="/drilling" class="btn btn-primary mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Fluids Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-flask fa-3x text-info"></i>
+                </div>
+                <h5 class="card-title">Fluid Properties</h5>
+                <p class="card-text">
+                    PVT properties, formation volume factors, viscosity, 
+                    and thermodynamic calculations.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Water formation volume factor</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Gas formation volume factor</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Water compressibility</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Fluid viscosity</li>
+                </ul>
+                <a href="/fluids" class="btn btn-info mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reservoir Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-layer-group fa-3x text-success"></i>
+                </div>
+                <h5 class="card-title">Reservoir Engineering</h5>
+                <p class="card-text">
+                    Material balance, recovery calculations, decline analysis, 
+                    and reservoir characterization.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Oil formation volume factor</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Solution gas-oil ratio</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Standing's correlations</li>
+                    <li><i class="fas fa-check text-success me-2"></i>PVT analysis</li>
+                </ul>
+                <a href="/reservoir" class="btn btn-success mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Production Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-industry fa-3x text-warning"></i>
+                </div>
+                <h5 class="card-title">Production Engineering</h5>
+                <p class="card-text">
+                    Well performance, artificial lift, flow assurance, 
+                    and production optimization.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Vogel IPR</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Productivity index</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Darcy radial flow</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Well test analysis</li>
+                </ul>
+                <a href="/production" class="btn btn-warning mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Economics Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-chart-line fa-3x text-danger"></i>
+                </div>
+                <h5 class="card-title">Economics</h5>
+                <p class="card-text">
+                    Economic evaluation, NPV analysis, cash flow modeling, 
+                    and investment decisions.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>NPV calculations</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Cash flow analysis</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Discounted cash flow</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Risk assessment</li>
+                </ul>
+                <a href="/economics" class="btn btn-danger mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completion Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-cog fa-3x text-secondary"></i>
+                </div>
+                <h5 class="card-title">Completion Engineering</h5>
+                <p class="card-text">
+                    Perforation flow efficiency, completion design, 
+                    and wellbore completion calculations.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Perforation flow efficiency</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Skin factor analysis</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Completion design</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Flow calculations</li>
+                </ul>
+                <a href="/completion" class="btn btn-secondary mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Flow Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-stream fa-3x text-primary"></i>
+                </div>
+                <h5 class="card-title">Flow Calculations</h5>
+                <p class="card-text">
+                    Single-phase and multiphase flow, pressure drop, 
+                    and flow through pipes and restrictions.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Moody friction factor</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Pressure drop calculations</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Multiphase flow</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Flow through orifices</li>
+                </ul>
+                <a href="/flow" class="btn btn-primary mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pressure Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-gauge-high fa-3x text-warning"></i>
+                </div>
+                <h5 class="card-title">Pressure Analysis</h5>
+                <p class="card-text">
+                    Formation pressures, well control, kick tolerance, 
+                    and pressure gradient calculations.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Formation pressure gradient</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Fracture pressure</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Well control calculations</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Kick tolerance</li>
+                </ul>
+                <a href="/pressure" class="btn btn-warning mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rock Properties Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-mountain fa-3x text-success"></i>
+                </div>
+                <h5 class="card-title">Rock Properties</h5>
+                <p class="card-text">
+                    Porosity, permeability, water saturation, 
+                    and petrophysical analysis.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Porosity from logs</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Archie's equation</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Permeability correlations</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Relative permeability</li>
+                </ul>
+                <a href="/rock_properties" class="btn btn-success mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Thermodynamics Module -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-thermometer-half fa-3x text-info"></i>
+                </div>
+                <h5 class="card-title">Thermodynamics</h5>
+                <p class="card-text">
+                    Heat transfer, thermal properties, 
+                    and thermodynamic calculations.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Heat capacity calculations</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Thermal conductivity</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Heat transfer coefficients</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Temperature calculations</li>
+                </ul>
+                <a href="/thermodynamics" class="btn btn-info mt-3">
+                    <i class="fas fa-calculator me-2"></i>Start Calculations
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Documentation -->
+    <div class="col-lg-6 col-xl-4">
+        <div class="card h-100 shadow-sm hover-card">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="fas fa-code fa-3x text-dark"></i>
+                </div>
+                <h5 class="card-title">API Documentation</h5>
+                <p class="card-text">
+                    Interactive API documentation for developers. 
+                    Test endpoints and integrate with your applications.
+                </p>
+                <ul class="list-unstyled text-start small">
+                    <li><i class="fas fa-check text-success me-2"></i>Interactive Swagger UI</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Complete API reference</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Example requests</li>
+                    <li><i class="fas fa-check text-success me-2"></i>Response schemas</li>
+                </ul>
+                <a href="/api/docs" target="_blank" class="btn btn-dark mt-3">
+                    <i class="fas fa-external-link-alt me-2"></i>View API Docs
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h4 class="card-title text-center mb-4">
+                    <i class="fas fa-star me-2"></i>Key Features
+                </h4>
+                <div class="row">
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-mobile-alt fa-2x text-primary mb-2"></i>
+                        <h6>Responsive Design</h6>
+                        <p class="small">Works seamlessly on desktop, tablet, and mobile devices</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-rocket fa-2x text-primary mb-2"></i>
+                        <h6>Fast & Reliable</h6>
+                        <p class="small">Built with FastAPI for high performance and reliability</p>
+                    </div>
+                    <div class="col-md-4 text-center mb-3">
+                        <i class="fas fa-shield-alt fa-2x text-primary mb-2"></i>
+                        <h6>Input Validation</h6>
+                        <p class="small">Comprehensive input validation and error handling</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+// Search functionality
+document.getElementById('searchBtn').addEventListener('click', function() {
+    const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    if (searchTerm) {
+        // Simple search logic - could be enhanced with more sophisticated matching
+        if (searchTerm.includes('drill') || searchTerm.includes('mud')) {
+            window.location.href = '/drilling';
+        } else if (searchTerm.includes('fluid') || searchTerm.includes('pvt') || searchTerm.includes('viscosity')) {
+            window.location.href = '/fluids';
+        } else if (searchTerm.includes('reservoir') || searchTerm.includes('oil') || searchTerm.includes('gas')) {
+            window.location.href = '/reservoir';
+        } else if (searchTerm.includes('production') || searchTerm.includes('well') || searchTerm.includes('vogel') || searchTerm.includes('ipr')) {
+            window.location.href = '/production';
+        } else if (searchTerm.includes('economic') || searchTerm.includes('npv')) {
+            window.location.href = '/economics';
+        } else if (searchTerm.includes('completion') || searchTerm.includes('perforation')) {
+            window.location.href = '/completion';
+        } else if (searchTerm.includes('flow') || searchTerm.includes('pressure drop') || searchTerm.includes('multiphase')) {
+            window.location.href = '/flow';
+        } else if (searchTerm.includes('pressure') || searchTerm.includes('formation') || searchTerm.includes('fracture')) {
+            window.location.href = '/pressure';
+        } else if (searchTerm.includes('rock') || searchTerm.includes('porosity') || searchTerm.includes('permeability') || searchTerm.includes('archie')) {
+            window.location.href = '/rock_properties';
+        } else if (searchTerm.includes('thermo') || searchTerm.includes('heat') || searchTerm.includes('temperature')) {
+            window.location.href = '/thermodynamics';
+        } else {
+            alert('No specific module found. Please browse the available modules above.');
+        }
+    }
+});
+
+// Enter key search
+document.getElementById('searchInput').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        document.getElementById('searchBtn').click();
+    }
+});
+</script>
+{% endblock %}

@@ -1,0 +1,449 @@
+{% extends "base.html" %}
+
+{% block title %}Thermodynamics - PetroCalc Web{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="fas fa-thermometer-half me-3"></i>Thermodynamics</h1>
+                <p class="text-muted">Heat transfer, thermal properties, and thermodynamic calculations</p>
+            </div>
+            <a href="/" class="btn btn-outline-primary">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Heat Capacity Oil Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-fire me-2"></i>Heat Capacity - Oil</h5>
+            </div>
+            <div class="card-body">
+                <form id="heatCapacityOilForm">
+                    <div class="mb-3">
+                        <label for="oilGravity" class="form-label">Oil API Gravity (°API)</label>
+                        <input type="number" class="form-control" id="oilGravity" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="temperature" class="form-label">Temperature (°F)</label>
+                        <input type="number" class="form-control" id="temperature" step="0.1" required>
+                    </div>
+                    <button type="submit" class="btn btn-info">
+                        <i class="fas fa-calculator me-2"></i>Calculate Heat Capacity
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="heatCapacityOilResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Thermal Conductivity Oil Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-white">
+                <h5 class="mb-0"><i class="fas fa-exchange-alt me-2"></i>Thermal Conductivity - Oil</h5>
+            </div>
+            <div class="card-body">
+                <form id="thermalConductivityForm">
+                    <div class="mb-3">
+                        <label for="tcOilGravity" class="form-label">Oil API Gravity (°API)</label>
+                        <input type="number" class="form-control" id="tcOilGravity" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tcTemperature" class="form-label">Temperature (°F)</label>
+                        <input type="number" class="form-control" id="tcTemperature" step="0.1" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-calculator me-2"></i>Calculate Thermal Conductivity
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="thermalConductivityResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Heat Capacity Gas Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-cloud me-2"></i>Heat Capacity - Gas</h5>
+            </div>
+            <div class="card-body">
+                <form id="heatCapacityGasForm">
+                    <div class="mb-3">
+                        <label for="gasGravity" class="form-label">Gas Gravity (air = 1.0)</label>
+                        <input type="number" class="form-control" id="gasGravity" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gasTemperature" class="form-label">Temperature (°F)</label>
+                        <input type="number" class="form-control" id="gasTemperature" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="gasPressure" class="form-label">Pressure (psia)</label>
+                        <input type="number" class="form-control" id="gasPressure" step="0.1" value="14.7">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-calculator me-2"></i>Calculate Heat Capacity
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="heatCapacityGasResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Temperature Drop in Flowing Well Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-arrow-down me-2"></i>Temperature Drop - Flowing Well</h5>
+            </div>
+            <div class="card-body">
+                <form id="temperatureDropForm">
+                    <div class="mb-3">
+                        <label for="depth" class="form-label">Depth (ft)</label>
+                        <input type="number" class="form-control" id="depth" step="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="flowRate" class="form-label">Flow Rate (bbl/day)</label>
+                        <input type="number" class="form-control" id="flowRate" step="1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="geothermalGradient" class="form-label">Geothermal Gradient (°F/ft)</label>
+                        <input type="number" class="form-control" id="geothermalGradient" step="0.001" value="0.015">
+                    </div>
+                    <div class="mb-3">
+                        <label for="surfaceTemperature" class="form-label">Surface Temperature (°F)</label>
+                        <input type="number" class="form-control" id="surfaceTemperature" step="0.1" value="70">
+                    </div>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-calculator me-2"></i>Calculate Temperature
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="temperatureDropResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle me-2"></i>About Thermodynamics Calculations</h5>
+                <p>
+                    Thermodynamics calculations are essential for thermal management in petroleum operations:
+                </p>
+                <ul>
+                    <li><strong>Heat Capacity:</strong> Quantifies the amount of heat required to change temperature</li>
+                    <li><strong>Thermal Conductivity:</strong> Measures the ability to conduct heat</li>
+                    <li><strong>Temperature Profiles:</strong> Predicts temperature changes in flowing wells</li>
+                    <li><strong>Heat Transfer:</strong> Analyzes heat exchange in production systems</li>
+                </ul>
+                <p>
+                    These calculations support thermal enhanced oil recovery, pipeline design, and process optimization.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('heatCapacityOilForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        oil_gravity: parseFloat(document.getElementById('oilGravity').value),
+        temperature: parseFloat(document.getElementById('temperature').value)
+    };
+    
+    try {
+        const response = await fetch('/api/thermodynamics/heat_capacity_oil', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('heatCapacityOilResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Heat Capacity:</strong></td>
+                            <td>${result.heat_capacity_btu_per_lb_f.toFixed(4)} Btu/lb-°F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Oil Gravity:</strong></td>
+                            <td>${result.oil_gravity_api}°API</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Temperature:</strong></td>
+                            <td>${result.temperature_fahrenheit}°F</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('heatCapacityOilResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('heatCapacityOilResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('thermalConductivityForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        oil_gravity: parseFloat(document.getElementById('tcOilGravity').value),
+        temperature: parseFloat(document.getElementById('tcTemperature').value)
+    };
+    
+    try {
+        const response = await fetch('/api/thermodynamics/thermal_conductivity_oil', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('thermalConductivityResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Thermal Conductivity:</strong></td>
+                            <td>${result.thermal_conductivity_btu_per_hr_ft_f.toFixed(4)} Btu/hr-ft-°F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Oil Gravity:</strong></td>
+                            <td>${result.oil_gravity_api}°API</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Temperature:</strong></td>
+                            <td>${result.temperature_fahrenheit}°F</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('thermalConductivityResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('thermalConductivityResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('heatCapacityGasForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        gas_gravity: parseFloat(document.getElementById('gasGravity').value),
+        temperature: parseFloat(document.getElementById('gasTemperature').value),
+        pressure: parseFloat(document.getElementById('gasPressure').value)
+    };
+    
+    try {
+        const response = await fetch('/api/thermodynamics/heat_capacity_gas', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('heatCapacityGasResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Heat Capacity:</strong></td>
+                            <td>${result.heat_capacity_btu_per_lb_f.toFixed(4)} Btu/lb-°F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gas Gravity:</strong></td>
+                            <td>${result.gas_gravity}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Temperature:</strong></td>
+                            <td>${result.temperature_fahrenheit}°F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pressure:</strong></td>
+                            <td>${result.pressure_psia} psia</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('heatCapacityGasResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('heatCapacityGasResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('temperatureDropForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        depth: parseFloat(document.getElementById('depth').value),
+        flow_rate: parseFloat(document.getElementById('flowRate').value),
+        geothermal_gradient: parseFloat(document.getElementById('geothermalGradient').value),
+        surface_temperature: parseFloat(document.getElementById('surfaceTemperature').value)
+    };
+    
+    try {
+        const response = await fetch('/api/thermodynamics/temperature_drop_flowing_well', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('temperatureDropResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Temperature at Depth:</strong></td>
+                            <td>${result.temperature_at_depth_fahrenheit.toFixed(1)}°F</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Depth:</strong></td>
+                            <td>${result.depth_ft.toLocaleString()} ft</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Flow Rate:</strong></td>
+                            <td>${result.flow_rate_bbl_per_day.toLocaleString()} bbl/day</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Surface Temperature:</strong></td>
+                            <td>${result.surface_temperature_fahrenheit}°F</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('temperatureDropResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('temperatureDropResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+</script>
+{% endblock %}

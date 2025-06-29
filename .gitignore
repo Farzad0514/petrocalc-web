@@ -1,6 +1,13 @@
+# ==============================================================================
+# PetroCalc Web Application .gitignore
+# ==============================================================================
+
+# ==============================================================================
+# Python Files
+# ==============================================================================
 # Byte-compiled / optimized / DLL files
 __pycache__/
-*.py[codz]
+*.py[cod]
 *$py.class
 
 # C extensions
@@ -20,6 +27,7 @@ parts/
 sdist/
 var/
 wheels/
+pip-wheel-metadata/
 share/python-wheels/
 *.egg-info/
 .installed.cfg
@@ -46,162 +54,360 @@ htmlcov/
 nosetests.xml
 coverage.xml
 *.cover
-*.py.cover
+*.py,cover
 .hypothesis/
 .pytest_cache/
 cover/
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# UV
-#   Similar to Pipfile.lock, it is generally recommended to include uv.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#uv.lock
-
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
-#poetry.toml
-
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#   pdm recommends including project-wide configuration in pdm.toml, but excluding .pdm-python.
-#   https://pdm-project.org/en/latest/usage/project/#working-with-version-control
-#pdm.lock
-#pdm.toml
-.pdm-python
-.pdm-build/
-
-# pixi
-#   Similar to Pipfile.lock, it is generally recommended to include pixi.lock in version control.
-#pixi.lock
-#   Pixi creates a virtual environment in the .pixi directory, just like venv module creates one
-#   in the .venv directory. It is recommended not to include this directory in version control.
-.pixi
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
+# ==============================================================================
+# Virtual Environments & Dependencies
+# ==============================================================================
+# Virtual environments
 .env
-.envrc
 .venv
 env/
 venv/
 ENV/
 env.bak/
 venv.bak/
+.envrc
 
-# Spyder project settings
+# Poetry (we're not using it but keep for safety)
+poetry.lock
+.venv/
+
+# Pipenv
+Pipfile.lock
+
+# pdm
+.pdm-python
+.pdm-build/
+pdm.lock
+
+# UV
+uv.lock
+
+# PEP 582
+__pypackages__/
+
+# ==============================================================================
+# Web Framework Specific (FastAPI/Uvicorn)
+# ==============================================================================
+# FastAPI specific
+.uvicorn/
+uvicorn.log
+
+# Static files cache
+staticfiles/
+media/
+
+# Session files
+sessions/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+db.sqlite3
+db.sqlite3-journal
+
+# ==============================================================================
+# Development Tools & IDEs
+# ==============================================================================
+# Visual Studio Code
+.vscode/
+*.code-workspace
+
+# PyCharm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Spyder
 .spyderproject
 .spyproject
 
-# Rope project settings
+# Rope
 .ropeproject
 
-# mkdocs documentation
-/site
+# Sublime Text
+*.sublime-project
+*.sublime-workspace
 
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
+# Atom
+.atom/
 
-# Pyre type checker
-.pyre/
+# Vim
+*.swp
+*.swo
+*~
 
-# pytype static type analyzer
-.pytype/
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
 
-# Cython debug symbols
-cython_debug/
-
-# PyCharm
-#  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
-#  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
-#  and can be added to the global gitignore or merged into this file.  For a more nuclear
-#  option (not recommended) you can uncomment the following to ignore the entire idea folder.
-#.idea/
-
-# Abstra
-# Abstra is an AI-powered process automation framework.
-# Ignore directories containing user credentials, local state, and settings.
-# Learn more at https://abstra.io/docs
-.abstra/
-
-# Visual Studio Code
-#  Visual Studio Code specific template is maintained in a separate VisualStudioCode.gitignore 
-#  that can be found at https://github.com/github/gitignore/blob/main/Global/VisualStudioCode.gitignore
-#  and can be added to the global gitignore or merged into this file. However, if you prefer, 
-#  you could uncomment the following to ignore the entire vscode folder
-# .vscode/
-
-# Ruff stuff:
-.ruff_cache/
-
-# PyPI configuration file
-.pypirc
-
-# Cursor
-#  Cursor is an AI-powered code editor. `.cursorignore` specifies files/directories to
-#  exclude from AI features like autocomplete and code analysis. Recommended for sensitive data
-#  refer to https://docs.cursor.com/context/ignore-files
+# Cursor AI Editor
 .cursorignore
 .cursorindexingignore
 
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
+# ==============================================================================
+# OS Generated Files
+# ==============================================================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msm
+*.msp
+*.lnk
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ==============================================================================
+# Logs & Temporary Files
+# ==============================================================================
+# Log files
+*.log
+logs/
+log/
+*.log.*
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.temp
+*.bak
+*.backup
+*.orig
+
+# ==============================================================================
+# Security & Configuration
+# ==============================================================================
+# Environment variables and secrets
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+*.env
+.secrets
+secrets.json
+config/local.py
+config/secrets.py
+
+# SSL certificates
+*.pem
+*.key
+*.crt
+*.csr
+*.p12
+*.pfx
+
+# API keys and credentials
+.api_keys
+.credentials
+auth.json
+service-account.json
+
+# ==============================================================================
+# Documentation & Build
+# ==============================================================================
+# Sphinx documentation
+docs/_build/
+docs/build/
+.readthedocs.yml
+
+# MkDocs
+/site
+site/
+
+# Coverage reports
+htmlcov/
+.coverage
+coverage.xml
+*.cover
+
+# ==============================================================================
+# Docker & Containerization
+# ==============================================================================
+# Docker
+.dockerignore
+docker-compose.override.yml
+.docker/
+
+# Kubernetes
+*.yaml.local
+*.yml.local
+
+# ==============================================================================
+# Data & Cache Files
+# ==============================================================================
+# Cache directories
+.cache/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.tox/
+.nox/
+
+# Data files (be careful with petroleum data)
+data/raw/
+data/temp/
+*.csv.backup
+*.xlsx.backup
+*.parquet.backup
+
+# ==============================================================================
+# Application Specific
+# ==============================================================================
+# PetroCalc specific data files
+petrocalc_data/
+calculation_results/
+user_uploads/
+
+# Static files (if generated)
+app/static/uploads/
+app/static/temp/
+
+# User-generated content
+uploads/
+media/
+user_files/
+
+# ==============================================================================
+# Monitoring & Profiling
+# ==============================================================================
+# Performance profiling
+*.prof
+*.profile
+profiling/
+
+# Monitoring
+monitoring/
+metrics/
+
+# ==============================================================================
+# CI/CD & Deployment
+# ==============================================================================
+# GitHub Actions
+.github/workflows/*.log
+
+# Deployment
+deploy/
+deployment/
+.deploy/
+
+# Terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
+
+# Ansible
+*.retry
+
+# ==============================================================================
+# Package Managers & Lock Files
+# ==============================================================================
+# Node.js (in case we add frontend tools)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# ==============================================================================
+# Miscellaneous
+# ==============================================================================
+# Backup files
+*.backup
+*.bak
+*.old
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# ==============================================================================
+# Keep these files (force include with !)
+# ==============================================================================
+# Keep important config files
+!requirements.txt
+!requirements-dev.txt
+!Dockerfile
+!docker-compose.yml
+!.gitignore
+!README.md
+!LICENSE
+
+# Keep static assets that should be versioned
+!app/static/css/
+!app/static/js/
+!app/static/img/
+!app/static/favicon.ico
+
+# Keep template files
+!app/templates/
+
+# Keep important documentation
+!docs/
+!*.md

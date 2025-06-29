@@ -1,0 +1,359 @@
+{% extends "base.html" %}
+
+{% block title %}Rock Properties - PetroCalc Web{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="fas fa-mountain me-3"></i>Rock Properties</h1>
+                <p class="text-muted">Porosity, permeability, water saturation, and petrophysical analysis</p>
+            </div>
+            <a href="/" class="btn btn-outline-primary">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Porosity from Logs Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-line me-2"></i>Porosity from Logs</h5>
+            </div>
+            <div class="card-body">
+                <form id="porosityLogsForm">
+                    <div class="mb-3">
+                        <label for="neutronPorosity" class="form-label">Neutron Porosity (fraction)</label>
+                        <input type="number" class="form-control" id="neutronPorosity" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="densityPorosity" class="form-label">Density Porosity (fraction)</label>
+                        <input type="number" class="form-control" id="densityPorosity" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="shaleVolume" class="form-label">Shale Volume (fraction)</label>
+                        <input type="number" class="form-control" id="shaleVolume" step="0.01" value="0.0">
+                    </div>
+                    <button type="submit" class="btn btn-success">
+                        <i class="fas fa-calculator me-2"></i>Calculate Porosity
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="porosityLogsResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Water Saturation (Archie) Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-tint me-2"></i>Water Saturation (Archie's Equation)</h5>
+            </div>
+            <div class="card-body">
+                <form id="archieForm">
+                    <div class="mb-3">
+                        <label for="formationResistivity" class="form-label">Formation Resistivity (ohm-m)</label>
+                        <input type="number" class="form-control" id="formationResistivity" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="waterResistivity" class="form-label">Water Resistivity (ohm-m)</label>
+                        <input type="number" class="form-control" id="waterResistivity" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="porosity" class="form-label">Porosity (fraction)</label>
+                        <input type="number" class="form-control" id="porosity" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="cementationFactor" class="form-label">Cementation Factor (m)</label>
+                        <input type="number" class="form-control" id="cementationFactor" step="0.1" value="2.0">
+                    </div>
+                    <div class="mb-3">
+                        <label for="saturationExponent" class="form-label">Saturation Exponent (n)</label>
+                        <input type="number" class="form-control" id="saturationExponent" step="0.1" value="2.0">
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-calculator me-2"></i>Calculate Water Saturation
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="archieResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Permeability (Timur) Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-white">
+                <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Permeability (Timur Correlation)</h5>
+            </div>
+            <div class="card-body">
+                <form id="timurForm">
+                    <div class="mb-3">
+                        <label for="timurPorosity" class="form-label">Porosity (fraction)</label>
+                        <input type="number" class="form-control" id="timurPorosity" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="irreducibleWaterSat" class="form-label">Irreducible Water Saturation (fraction)</label>
+                        <input type="number" class="form-control" id="irreducibleWaterSat" step="0.01" required>
+                    </div>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-calculator me-2"></i>Calculate Permeability
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="timurResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle me-2"></i>About Rock Properties</h5>
+                <p>
+                    Rock properties are fundamental to reservoir characterization and include:
+                </p>
+                <ul>
+                    <li><strong>Porosity:</strong> The void space in rock that can contain fluids</li>
+                    <li><strong>Water Saturation:</strong> The fraction of pore space occupied by water</li>
+                    <li><strong>Permeability:</strong> The ability of rock to transmit fluids</li>
+                    <li><strong>Formation Factor:</strong> Relates rock resistivity to formation water resistivity</li>
+                </ul>
+                <p>
+                    These calculations are essential for reservoir evaluation, log analysis, and hydrocarbon resource assessment.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('porosityLogsForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        neutron_porosity: parseFloat(document.getElementById('neutronPorosity').value),
+        density_porosity: parseFloat(document.getElementById('densityPorosity').value),
+        shale_volume: parseFloat(document.getElementById('shaleVolume').value)
+    };
+    
+    try {
+        const response = await fetch('/api/rock_properties/porosity_from_logs', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('porosityLogsResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Effective Porosity:</strong></td>
+                            <td>${(result.effective_porosity_fraction * 100).toFixed(2)}%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Neutron Porosity:</strong></td>
+                            <td>${(result.neutron_porosity_fraction * 100).toFixed(2)}%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Density Porosity:</strong></td>
+                            <td>${(result.density_porosity_fraction * 100).toFixed(2)}%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Shale Volume:</strong></td>
+                            <td>${(result.shale_volume_fraction * 100).toFixed(2)}%</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('porosityLogsResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('porosityLogsResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('archieForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        formation_resistivity: parseFloat(document.getElementById('formationResistivity').value),
+        water_resistivity: parseFloat(document.getElementById('waterResistivity').value),
+        porosity: parseFloat(document.getElementById('porosity').value),
+        cementation_factor: parseFloat(document.getElementById('cementationFactor').value),
+        saturation_exponent: parseFloat(document.getElementById('saturationExponent').value)
+    };
+    
+    try {
+        const response = await fetch('/api/rock_properties/water_saturation_archie', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('archieResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Water Saturation:</strong></td>
+                            <td>${(result.water_saturation_fraction * 100).toFixed(2)}%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Oil Saturation:</strong></td>
+                            <td>${((1-result.water_saturation_fraction) * 100).toFixed(2)}%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Formation Resistivity:</strong></td>
+                            <td>${result.formation_resistivity_ohm_m} ohm-m</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Porosity:</strong></td>
+                            <td>${(result.porosity_fraction * 100).toFixed(2)}%</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('archieResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('archieResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('timurForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        porosity: parseFloat(document.getElementById('timurPorosity').value),
+        irreducible_water_saturation: parseFloat(document.getElementById('irreducibleWaterSat').value)
+    };
+    
+    try {
+        const response = await fetch('/api/rock_properties/permeability_timur_correlation', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('timurResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Permeability:</strong></td>
+                            <td>${result.permeability_md.toFixed(2)} md</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Porosity:</strong></td>
+                            <td>${(result.porosity_fraction * 100).toFixed(2)}%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Irreducible Water Sat:</strong></td>
+                            <td>${(result.irreducible_water_saturation_fraction * 100).toFixed(2)}%</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('timurResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('timurResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+</script>
+{% endblock %}

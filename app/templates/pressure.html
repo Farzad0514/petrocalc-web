@@ -1,0 +1,349 @@
+{% extends "base.html" %}
+
+{% block title %}Pressure Analysis - PetroCalc Web{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h1><i class="fas fa-gauge-high me-3"></i>Pressure Analysis</h1>
+                <p class="text-muted">Formation pressures, well control, kick tolerance, and pressure gradient calculations</p>
+            </div>
+            <a href="/" class="btn btn-outline-primary">
+                <i class="fas fa-home me-2"></i>Back to Home
+            </a>
+        </div>
+    </div>
+</div>
+
+<!-- Formation Pressure Gradient Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-warning text-white">
+                <h5 class="mb-0"><i class="fas fa-layer-group me-2"></i>Formation Pressure Gradient</h5>
+            </div>
+            <div class="card-body">
+                <form id="formationPressureForm">
+                    <div class="mb-3">
+                        <label for="formationWaterDensity" class="form-label">Formation Water Density (lb/ft³)</label>
+                        <input type="number" class="form-control" id="formationWaterDensity" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="salinity" class="form-label">Salinity (ppm)</label>
+                        <input type="number" class="form-control" id="salinity" step="1000" value="100000">
+                    </div>
+                    <div class="mb-3">
+                        <label for="temperature" class="form-label">Temperature (°F)</label>
+                        <input type="number" class="form-control" id="temperature" step="1" value="150">
+                    </div>
+                    <button type="submit" class="btn btn-warning">
+                        <i class="fas fa-calculator me-2"></i>Calculate Gradient
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="formationPressureResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Equivalent Mud Weight Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-balance-scale me-2"></i>Equivalent Mud Weight</h5>
+            </div>
+            <div class="card-body">
+                <form id="mudWeightForm">
+                    <div class="mb-3">
+                        <label for="pressure" class="form-label">Pressure (psi)</label>
+                        <input type="number" class="form-control" id="pressure" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="depth" class="form-label">Depth (ft)</label>
+                        <input type="number" class="form-control" id="depth" step="0.1" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-calculator me-2"></i>Calculate EMW
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="mudWeightResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Kill Mud Weight Calculator -->
+<div class="row mb-4">
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Kill Mud Weight</h5>
+            </div>
+            <div class="card-body">
+                <form id="killMudWeightForm">
+                    <div class="mb-3">
+                        <label for="originalMudWeight" class="form-label">Original Mud Weight (ppg)</label>
+                        <input type="number" class="form-control" id="originalMudWeight" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="sidpp" class="form-label">Shut-in Drillpipe Pressure (psi)</label>
+                        <input type="number" class="form-control" id="sidpp" step="0.1" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tvd" class="form-label">True Vertical Depth (ft)</label>
+                        <input type="number" class="form-control" id="tvd" step="0.1" required>
+                    </div>
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-calculator me-2"></i>Calculate Kill MW
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-chart-bar me-2"></i>Results</h5>
+            </div>
+            <div class="card-body">
+                <div id="killMudWeightResults">
+                    <p class="text-muted">Enter parameters and click calculate to see results.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Information Section -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5><i class="fas fa-info-circle me-2"></i>About Pressure Analysis</h5>
+                <p>
+                    Pressure analysis is critical for safe and efficient drilling operations:
+                </p>
+                <ul>
+                    <li><strong>Formation Pressure Gradient:</strong> Determines the pressure exerted by formation fluids</li>
+                    <li><strong>Equivalent Mud Weight:</strong> Converts pressure to mud weight equivalent for drilling operations</li>
+                    <li><strong>Kill Mud Weight:</strong> Calculates the mud weight needed to control a well kick</li>
+                    <li><strong>Fracture Pressure:</strong> Determines the pressure at which formations will fracture</li>
+                </ul>
+                <p>
+                    These calculations are essential for well control, drilling safety, and preventing blowouts.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById('formationPressureForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        formation_water_density: parseFloat(document.getElementById('formationWaterDensity').value),
+        salinity: parseFloat(document.getElementById('salinity').value),
+        temperature: parseFloat(document.getElementById('temperature').value)
+    };
+    
+    try {
+        const response = await fetch('/api/pressure/formation_pressure_gradient', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('formationPressureResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Pressure Gradient:</strong></td>
+                            <td>${result.pressure_gradient_psi_per_ft.toFixed(4)} psi/ft</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Water Density:</strong></td>
+                            <td>${result.formation_water_density_lb_per_ft3} lb/ft³</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Salinity:</strong></td>
+                            <td>${result.salinity_ppm.toLocaleString()} ppm</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Temperature:</strong></td>
+                            <td>${result.temperature_fahrenheit}°F</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('formationPressureResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('formationPressureResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('mudWeightForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        pressure: parseFloat(document.getElementById('pressure').value),
+        depth: parseFloat(document.getElementById('depth').value)
+    };
+    
+    try {
+        const response = await fetch('/api/pressure/equivalent_mud_weight', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('mudWeightResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Equivalent Mud Weight:</strong></td>
+                            <td>${result.equivalent_mud_weight_ppg.toFixed(2)} ppg</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Pressure:</strong></td>
+                            <td>${result.pressure_psi.toLocaleString()} psi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Depth:</strong></td>
+                            <td>${result.depth_ft.toLocaleString()} ft</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('mudWeightResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('mudWeightResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+
+document.getElementById('killMudWeightForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        original_mud_weight: parseFloat(document.getElementById('originalMudWeight').value),
+        shut_in_drillpipe_pressure: parseFloat(document.getElementById('sidpp').value),
+        true_vertical_depth: parseFloat(document.getElementById('tvd').value)
+    };
+    
+    try {
+        const response = await fetch('/api/pressure/kill_mud_weight', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData)
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            document.getElementById('killMudWeightResults').innerHTML = `
+                <h6>Calculation Results:</h6>
+                <div class="table-responsive">
+                    <table class="table table-sm">
+                        <tr>
+                            <td><strong>Kill Mud Weight:</strong></td>
+                            <td>${result.kill_mud_weight_ppg.toFixed(2)} ppg</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Original Mud Weight:</strong></td>
+                            <td>${result.original_mud_weight_ppg} ppg</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SIDPP:</strong></td>
+                            <td>${result.shut_in_drillpipe_pressure_psi} psi</td>
+                        </tr>
+                        <tr>
+                            <td><strong>TVD:</strong></td>
+                            <td>${result.true_vertical_depth_ft.toLocaleString()} ft</td>
+                        </tr>
+                    </table>
+                </div>
+            `;
+        } else {
+            const error = await response.json();
+            document.getElementById('killMudWeightResults').innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle me-2"></i>
+                    Error: ${error.detail}
+                </div>
+            `;
+        }
+    } catch (error) {
+        document.getElementById('killMudWeightResults').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="fas fa-exclamation-triangle me-2"></i>
+                Network error: ${error.message}
+            </div>
+        `;
+    }
+});
+</script>
+{% endblock %}
